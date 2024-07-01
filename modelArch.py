@@ -7,17 +7,6 @@ import keras
 from keras import layers
 
 
-"""
-## Define the Transformer Input Layer
-
-When processing past target tokens for the decoder, we compute the sum of
-position embeddings and token embeddings.
-
-When processing audio features, we apply convolutional layers to downsample
-them (via convolution strides) and process local relationships.
-"""
-
-
 class TokenEmbedding(layers.Layer):
     def __init__(self, num_vocab=1000, maxlen=100, num_hid=64):
         super().__init__()
@@ -134,16 +123,6 @@ class TransformerDecoder(layers.Layer):
         ffn_out = self.ffn(enc_out_norm)
         ffn_out_norm = self.layernorm3(enc_out_norm + self.ffn_dropout(ffn_out))
         return ffn_out_norm
-
-
-"""
-## Complete the Transformer model
-
-Our model takes audio spectrograms as inputs and predicts a sequence of characters.
-During training, we give the decoder the target character sequence shifted to the left
-as input. During inference, the decoder uses its own past predictions to predict the
-next token.
-"""
 
 
 class Transformer(keras.Model):
